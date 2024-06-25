@@ -14,10 +14,11 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // category: {
-    //     type: String,
-    //     required: true
-    // },
+    category: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Category', 
+        required: true 
+    },
     sizes:[
         {
             type: String,
@@ -33,9 +34,13 @@ const productSchema = new mongoose.Schema({
         min: 0,
         default: 0, 
     },
-    
+    imagePath: {
+        type: String,
+        required: true,
+      },
 },{
     timestamps: true, // Adds createdAt and updatedAt fields
   });
+  
 
 module.exports = mongoose.model('Product', productSchema);

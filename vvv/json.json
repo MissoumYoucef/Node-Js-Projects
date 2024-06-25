@@ -1,0 +1,49 @@
+[
+    {
+      "_id": "61a1a1a1a1a1a1a1a1a1a1a1",
+      "user": "66759d362124eb1d6aee0064", 
+      "items": [
+        {
+          "product": "6674801d5917cdb888c05205", 
+          "quantity": 2,
+          "priceAtPurchase": 19.99
+        },
+        {
+          "product": "6674801d5917cdb888c05206", 
+          "quantity": 1,
+          "priceAtPurchase": 29.99
+        }
+      ],
+      "totalAmount": 69.97,
+      "shippingAddress": {
+        "street": "123 Main Street",
+        "city": "Anytown",
+        "zip": "12345",
+        "country": "USA"
+      },
+      "status": "processing", 
+      "createdAt": "2023-11-28T10:00:00.000Z",
+      "updatedAt": "2023-11-28T12:00:00.000Z" 
+    },
+    {
+      "_id": "61a1b1b1b1b1b1b1b1b1b1b1",
+      "user": "66759d362124eb1d6aee0064",
+      "items": [
+        {
+          "product": "6674801d5917cdb888c05205", 
+          "quantity": 1,
+          "priceAtPurchase": 49.99
+        }
+      ],
+      "totalAmount": 49.99,
+      "shippingAddress": {
+        "street": "456 Oak Avenue",
+        "city": "Springfield",
+        "zip": "67890",
+        "country": "USA"
+      },
+      "status": "shipped",
+      "createdAt": "2023-11-29T15:30:00.000Z",
+      "updatedAt": "2023-11-29T16:00:00.000Z"
+    }
+  ]
