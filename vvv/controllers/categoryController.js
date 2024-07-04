@@ -25,11 +25,45 @@ exports.getCategoryById = async (req, res) => {
   }
 };
 
-// Create a new product (admin only) 
-// ... (Implementation for adding a new product)
+// Create a new category (admin only)
+exports.createCategory = async (req, res) => {
+  const category = new Category(req.body); 
+  try {
+    const newCategory = await category.save();
+    res.status(201).json(newCategory); 
+  } catch (error) {
+    res.status(400).json({ message: error.message }); 
+  }
+};
 
-// Update a product (admin only)
-// ... (Implementation for updating an existing product)
+// Update a category (admin only)
+exports.updateCategory = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
 
-// Delete a product (admin only)
-// ... (Implementation for deleting a product)
+    // Update the category properties with data from the request body
+    Object.assign(category, req.body); 
+
+    const updatedCategory = await category.save();
+    res.json(updatedCategory);
+  } catch (error) {
+    res.status(400).json({ message: error.message }); 
+  }
+};
+
+// Delete a category (admin only)
+exports.deleteCategory = async (req, res) => {
+  try {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    await category.deleteOne();
+    res.json({ message: 'Category deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

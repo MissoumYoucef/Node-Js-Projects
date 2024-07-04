@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= form.title %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1><%= form.title %></h1>
+  <form action="/forms/<%= form.id %>/submit" method="POST">
+    <% form.fields.forEach(field => { %>
+      <div>
+        <label><%= field.label %></label>
+        <input type="<%= field.type %>" name="<%= field.label %>" <%= field.required ? 'required' : '' %>>
+      </div>
+    <% }) %>
+    <button type="submit">Submit</button>
+  </form>
+  <a href="/dashboard">Back to Dashboard</a>
+</body>
+</html>
