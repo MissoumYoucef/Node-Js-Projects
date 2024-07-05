@@ -8,8 +8,9 @@ const logger = require('./config/logger');
 const morgan = require('morgan');
 const ws = require('ws');
 const path = require('path');
-
 const app = express();
+require('dotenv').config(); 
+
 const PORT = process.env.PORT || 3000;
 
 // Database config
@@ -19,10 +20,20 @@ connectDB()
 require('./config/auth')(passport);
 
 // Express session
+// app.use(session({
+//   secret: 'secret',
+//   resave: true,
+//   saveUninitialized: true
+// }));
+// Session Configuration
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
+  secret: 'secret', // Replace with a strong, randomly generated secret
+  resave: false, // Don't save session if unmodified
+  saveUninitialized: false, // Don't create session until something stored
+  cookie: { 
+      secure: true, // Set to true if using HTTPS 
+      httpOnly: true 
+  }
 }));
 
 // Passport middleware
@@ -41,25 +52,25 @@ app.use((req, res, next) => {
 });
 
 // Logger
-app.use(morgan('combined', { stream: logger.stream }));
+app.use(morgan('short', { stream: logger.stream }));
 
 // Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // EJS
-// app.set('view engine', 'ejs');
-// app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
-// // Routes
-// app.use('/', require('./routes/index'));
-// app.use('/users', require('./routes/users'));
+// Routes
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
 // app.use('/forms', require('./routes/forms'));
 
 // // WebSocket setup
-// const server = app.listen(PORT, () => {
-//   console.log(`Server started on port ${PORT}`);
-// });
+const server = app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
 // const wss = new ws.Server({ server });
 // wss.on('connection', (socket) => {
 //   console.log('WebSocket connection established');

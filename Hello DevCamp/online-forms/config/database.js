@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const db = process.env.MONGO_URI || 'mongodb://localhost:27017/online-forms';
+require('dotenv').config(); 
+const db = process.env.MONGO_URI;
 
 const connectDB = async () => {
     try {

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const User = require('..\models\User');
+const User = require('../models/User');
 
 // Register Page
 router.get('/register', (req, res) => res.render('register'));
@@ -72,6 +72,21 @@ router.post('/login', (req, res, next) => {
     failureFlash: true
   })(req, res, next);
 });
+
+// Dashboard Route (make sure it's protected)
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  res.render('dashboard', { user: req.user }); 
+});
+
+// Middleware to protect the dashboard route (and any other sensitive routes)
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next(); // User is logged in, proceed to the next middleware/route handler
+  } else {
+      req.flash('error_msg', 'Please log in to view that resource.');
+      res.redirect('/users/login'); 
+  }
+}
 
 // Logout
 router.get('/logout', (req, res) => {
