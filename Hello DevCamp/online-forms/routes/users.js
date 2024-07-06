@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../models/User');
+const secret = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // Register Page
 router.get('/register', (req, res) => res.render('register'));
@@ -65,28 +67,28 @@ router.post('/register', (req, res) => {
 });
 
 // Login
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  })(req, res, next);
-});
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
 
-// Dashboard Route (make sure it's protected)
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
-  res.render('dashboard', { user: req.user }); 
-});
+  User.findOne({ email: email }).then(user => {
+    if (!user) {
+      return res.status(404).json({ msg: 'That email is not registered' });
+    }
 
-// Middleware to protect the dashboard route (and any other sensitive routes)
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-      return next(); // User is logged in, proceed to the next middleware/route handler
-  } else {
-      req.flash('error_msg', 'Please log in to view that resource.');
-      res.redirect('/users/login'); 
-  }
-}
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch) {
+        const payload = { id: user.id, name: user.name };
+        jwt.sign(payload, secret, { expiresIn: 3600 }, (err, token) => {
+          if (err) throw err;
+          res.json({ success: true, token: 'Bearer ' + token });
+        });
+      } else {
+        return res.status(400).json({ msg: 'Password incorrect' });
+      }
+    });
+  });
+});
 
 // Logout
 router.get('/logout', (req, res) => {
