@@ -1,58 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const session = require('express-session');
-const flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const logger = require('./config/logger');
 const morgan = require('morgan');
 const ws = require('ws');
 const path = require('path');
-const app = express();
 require('dotenv').config(); 
-
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Database config
-const connectDB=require('./config/database');
-connectDB()
+require('./config/database')(mongoose);
+
 // Passport config
 require('./config/auth')(passport);
 
-// Express session
-// app.use(session({
-//   secret: 'secret',
-//   resave: true,
-//   saveUninitialized: true
-// }));
-// Session Configuration
-app.use(session({
-  secret: 'secret', // Replace with a strong, randomly generated secret
-  resave: false, // Don't save session if unmodified
-  saveUninitialized: false, // Don't create session until something stored
-  cookie: { 
-      secure: true, // Set to true if using HTTPS 
-      httpOnly: true 
-  }
-}));
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Connect flash
-app.use(flash());
-
-// Global vars
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
-  res.locals.error = req.flash('error');
-  next();
-});
-
 // Logger
-app.use(morgan('short', { stream: logger.stream }));
+app.use(morgan('tiny', { stream: logger.stream }));
 
 // Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,12 +27,15 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Passport middleware
+app.use(passport.initialize());
+
 // Routes
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-// app.use('/forms', require('./routes/forms'));
+app.use('/forms', require('./routes/forms'));
 
-// // WebSocket setup
+// WebSocket setup
 const server = app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });

@@ -1,36 +1,25 @@
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../models/User');
+
+const secret = process.env.JWT_SECRET;
+
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: secret
+};
 
 module.exports = (passport) => {
   passport.use(
-    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-      User.findOne({ email: email })
+    new JwtStrategy(opts, (jwt_payload, done) => {
+      User.findById(jwt_payload.id)
         .then(user => {
-          if (!user) {
-            return done(null, false, { message: 'That email is not registered' });
+          if (user) {
+            return done(null, user);
           }
-
-          bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) throw err;
-            if (isMatch) {
-              return done(null, user);
-            } else {
-              return done(null, false, { message: 'Password incorrect' });
-            }
-          });
+          return done(null, false);
         })
         .catch(err => console.log(err));
     })
   );
-
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-      done(err, user);
-    });
-  });
 };

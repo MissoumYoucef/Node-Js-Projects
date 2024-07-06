@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const Form = require('../models/Form');
 const Response = require('../models/Response');
-const { ensureAuthenticated } = require('../config/auth');
 
 // Create Form Page
-router.get('/create', ensureAuthenticated, (req, res) => res.render('createForm'));
+router.get('/create', passport.authenticate('jwt', { session: false }), (req, res) => res.render('createForm'));
 
 // Create Form
-router.post('/create', ensureAuthenticated, (req, res) => {
+router.post('/create', passport.authenticate('jwt', { session: false }), (req, res) => {
   const { title, fields } = req.body;
   const newForm = new Form({
     title,
@@ -54,5 +54,3 @@ router.post('/:id/submit', (req, res) => {
 });
 
 module.exports = router;
-
-
