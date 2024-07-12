@@ -1,25 +1,26 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const FormSchema = new mongoose.Schema({
+const FieldSchema = new Schema({
+  label: {
+    type: String,
+    required: true
+  }
+});
+
+const FormSchema = new Schema({
   title: {
     type: String,
     required: true
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  fields: [
-    {
-      label: String,
-      type: String,
-      required: Boolean
-    }
-  ],
-  date: {
-    type: Date,
-    default: Date.now
+  fields: {
+    type: [FieldSchema],
+    required: true
   }
 });
 

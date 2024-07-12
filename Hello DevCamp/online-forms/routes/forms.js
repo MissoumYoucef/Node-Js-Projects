@@ -1,19 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 const Form = require('../models/Form');
 const Response = require('../models/Response');
+const authenticateToken = require('../config/verifyJwt');
 
 // Create Form Page
-router.get('/create', passport.authenticate('jwt', { session: false }), (req, res) => res.render('createForm'));
+router.get('/create', authenticateToken, (req, res) => res.render('createForm'));
 
 // Create Form
-router.post('/create', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/create', authenticateToken, (req, res) => {
   const { title, fields } = req.body;
+  
+  console.log(fields);
+
+  // Check if fields is a string and parse if necessary
+  let parsedFields;
+  try {
+    parsedFields = typeof fields === 'string' ? JSON.parse(fields) : fields;
+  } catch (e) {
+    return res.status(400).json({ msg: 'Invalid fields format' });
+  }
+
   const newForm = new Form({
     title,
     user: req.user.id,
-    fields: JSON.parse(fields)
+    fields: parsedFields
   });
 
   newForm.save()
@@ -25,7 +36,7 @@ router.post('/create', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 // View Form
-router.get('/:id', (req, res) => {
+router.get('/:id', authenticateToken, (req, res) => {
   Form.findById(req.params.id)
     .then(form => {
       if (!form) {
@@ -38,11 +49,14 @@ router.get('/:id', (req, res) => {
 });
 
 // Submit Response
-router.post('/:id/submit', (req, res) => {
-  const { answers } = req.body;
+router.post('/:id/submit',authenticateToken, (req, res) => {
+  const { form , answers } = req.body;
+  console.log(req.body);
+
   const newResponse = new Response({
-    form: req.params.id,
-    answers: JSON.parse(answers)
+    // form: req.params.id,
+    form: form,
+    answers: answers
   });
 
   newResponse.save()

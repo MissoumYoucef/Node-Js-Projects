@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const ws = require('ws');
 const path = require('path');
 require('dotenv').config(); 
+const session = require('express-session'); // Required for connect-flash
+const flash = require('connect-flash');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -22,7 +25,15 @@ app.use(morgan('tiny', { stream: logger.stream }));
 // Body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+// Session middleware (adjust settings as needed)
+app.use(session({
+  secret: '1234',
+  resave: false,
+  saveUninitialized: true 
+}));
 
+// Connect-flash initialization
+app.use(flash());
 // EJS
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));

@@ -1,0 +1,82 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <h2>Welcome <%= user.name %></h2>
+  <a href="/forms/create">Create Form</a>
+  <a href="/users/logout">Logout</a>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const token = localStorage.getItem('token');
+      if (token) {
+        fetch('/dashboard', {
+          method: 'GET',
+          headers: {
+            'Authorization': token
+          }
+        })
+        .then(response => {
+          if (response.status === 401) {
+            alert('Unauthorized access. Please log in.');
+            window.location.href = '/login';
+          } else {
+            return response.text();
+          }
+        })
+        .then(html => {
+          document.body.innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+      } else {
+        window.location.href = '/login';
+      }
+    });
+  </script>  
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Welcome to the Dashboard</h1>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const token = localStorage.getItem('token');
+      console.log(token);
+      if (token) {
+        fetch('/dashboard', {
+          method: 'GET',
+          headers: {
+            'Authorization': token
+          }
+        })
+        .then(response => {
+          if (response.status === 401) {
+            alert('Unauthorized access. Please log in.');
+            window.location.href = '/login';
+          } else {
+            return response.text();
+          }
+        })
+        .then(html => {
+          document.body.innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+      } else {
+        window.location.href = '/login';
+      }
+    });
+  </script>
+</body>
+</html>
