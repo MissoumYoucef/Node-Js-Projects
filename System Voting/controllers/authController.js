@@ -7,6 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.register = async (req, res) => {
   const errors = validationResult(req);
+  console.log(errors);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
   const { username, password, role } = req.body;
@@ -15,6 +16,7 @@ exports.register = async (req, res) => {
   const user = new User({ username, password: hashedPassword, role });
   await user.save();
   res.sendStatus(201);
+  console.log('succefully registered');
 };
 
 exports.login = async (req, res) => {
@@ -27,4 +29,5 @@ exports.login = async (req, res) => {
 
   const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET);
   res.json({ token });
+  console.log('succefully authenticated');
 };

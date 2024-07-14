@@ -1,7 +1,13 @@
 const authorizeRole = (role) => (req, res, next) => {
-    if (req.user.role !== role) return res.sendStatus(403);
+  console.log(role);
+    if (req.user.role !== role) {
+        console.log('forbidden');
+        return res.sendStatus(403);
+    }
+    console.log('authorized');
     next();
   };
   
+
 module.exports = authorizeRole;
   
