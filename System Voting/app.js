@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const candidateRoutes = require('./routes/candidateRoutes');
 const voteRoutes = require('./routes/voteRoutes');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -11,6 +12,9 @@ const PORT = process.env.PORT;
 connectDB();
 
 app.use(express.json());
+app.use(morgan('combined')); // Logging
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/votes', voteRoutes);

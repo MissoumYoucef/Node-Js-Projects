@@ -2,6 +2,7 @@ const Vote = require('../models/Vote');
 const Candidate = require('../models/Candidate');
 
 exports.vote = async (req, res) => {
+  console.log(req);
   const { candidateId } = req.body;
 
   const existingVote = await Vote.findOne({ userId: req.user.id });

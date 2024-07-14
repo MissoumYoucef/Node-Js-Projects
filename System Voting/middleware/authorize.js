@@ -1,9 +1,9 @@
 const authorizeRole = (role) => (req, res, next) => {
-  console.log(role);
-    if (req.user.role !== role) {
-        console.log('forbidden');
-        return res.sendStatus(403);
-    }
+  // 2. Role Check
+  if (!req.user || req.user.role !== role) {
+    console.log("Role mismatch:", user.role, "vs.", role); 
+    return res.status(403).json({ message: 'Forbidden - Insufficient privileges' });
+  }
     console.log('authorized');
     next();
   };
