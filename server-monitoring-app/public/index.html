@@ -1,0 +1,99 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Monitoring App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Server Monitoring App</h1>
+
+        <div class="section">
+            <h2>Execute Command</h2>
+            <input type="text" id="command" placeholder="Enter command">
+            <button onclick="executeCommand()">Execute</button>
+            <pre id="commandOutput"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Directory Explorer</h2>
+            <input type="text" id="dirPath" placeholder="Enter directory path">
+            <button onclick="listDirectory()">List Directory</button>
+            <ul id="directoryList"></ul>
+        </div>
+
+        <div class="section">
+            <h2>Create File</h2>
+            <input type="text" id="filePath" placeholder="Enter file path">
+            <textarea id="fileContent" placeholder="Enter file content"></textarea>
+            <button onclick="createFile()">Create File</button>
+            <pre id="createFileOutput"></pre>
+        </div>
+
+        <div class="section">
+            <h2>System Metrics</h2>
+            <button onclick="getMetrics()">Get Metrics</button>
+            <pre id="metricsOutput"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function executeCommand() {
+            const command = document.getElementById('command').value;
+            const response = await fetch('/execute', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command })
+            });
+            const result = await response.json();
+            document.getElementById('commandOutput').textContent = result.output || result.error;
+        }
+
+        async function listDirectory() {
+            const dirPath = document.getElementById('dirPath').value;
+            const response = await fetch(`/list-directory?dirPath=${encodeURIComponent(dirPath)}`);
+            const result = await response.json();
+            const list = document.getElementById('directoryList');
+            list.innerHTML = '';
+            if (result.files) {
+                result.files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.textContent = file;
+                    list.appendChild(li);
+                });
+            } else {
+                list.textContent = result.error;
+            }
+        }
+
+        async function createFile() {
+            const filePath = document.getElementById('filePath').value;
+            const content = document.getElementById('fileContent').value;
+            const response = await fetch('/create-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filePath, content })
+            });
+            const result = await response.json();
+            document.getElementById('createFileOutput').textContent = result.message || result.error;
+        }
+
+        async function getMetrics() {
+            const response = await fetch('/metrics');
+            const result = await response.json();
+            document.getElementById('metricsOutput').textContent = `
+                CPU Usage: ${result.cpuUsage.toFixed(2)}%
+                Free Memory: ${(result.freeMemory / 1024 / 1024).toFixed(2)} MB
+                Total Memory: ${(result.totalMemory / 1024 / 1024).toFixed(2)} MB
+            `;
+        }
+    </script>
+</body>
+</html>
