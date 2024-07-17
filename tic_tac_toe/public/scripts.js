@@ -12,6 +12,7 @@ let isMyTurn = false;
 
 createRoomBtn.addEventListener('click', () => {
   socket.emit('createRoom');
+  console.log('Room created');
 });
 
 joinRoomBtn.addEventListener('click', () => {
