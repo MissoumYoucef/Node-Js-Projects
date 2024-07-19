@@ -6,6 +6,7 @@ const path = require('path');
 exports.uploadFile = async (req, res) => {
   try {
     const { description } = req.body;
+    console.log(description);
     const file = new File({
       filename: req.file.filename,
       originalname: req.file.originalname,
