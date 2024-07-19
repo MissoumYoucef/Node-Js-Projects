@@ -20,14 +20,14 @@ mongoose.connect(process.env.MONGO_URI, {
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const courseRoutes = require('./routes/courseRoutes');
-const paymentRoutes = require('./routes/paymentRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
+// const paymentRoutes = require('./routes/paymentRoutes');
+// const dashboardRoutes = require('./routes/dashboardRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/payment', paymentRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+// app.use('/api/payment', paymentRoutes);
+// app.use('/api/dashboard', dashboardRoutes);
 
 app.use(express.static('views'));
 

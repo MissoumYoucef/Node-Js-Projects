@@ -1,21 +1,20 @@
 const User = require('../models/User');
 
 exports.addSubAdmin = async (req, res) => {
-    const { username, email, password } = req.body;
-    const admin = await User.findById(req.user.id);
+    const { email } = req.body;
+    const user = await User.findOne({ email });
 
-    if (admin.role !== 'admin') {
-        return res.status(403).json({ message: 'Not authorized' });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
     }
-    const subAdmin = await User.create({
-        username,
-        email,
-        password,
-        role: 'sub-admin',
-    });
-    res.status(201).json({
-        _id: subAdmin._id,
-        username: subAdmin.username,
-        email: subAdmin.email,
+
+    user.role = 'sub-admin';
+    await user.save();
+
+    res.status(200).json({
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role
     });
 };

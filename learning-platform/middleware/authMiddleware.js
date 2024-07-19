@@ -30,3 +30,12 @@ exports.admin = (req, res, next) => {
         res.status(401).json({ message: 'Not authorized as an admin' });
     }
 };
+
+
+exports.adminOrSubAdmin = (req, res, next) => {
+    if (req.user && (req.user.role === 'admin' || req.user.role === 'sub-admin')) {
+        next();
+    } else {
+        res.status(401).json({ message: 'Not authorized as an admin or sub-admin' });
+    }
+};
