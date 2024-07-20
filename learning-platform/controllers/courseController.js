@@ -41,7 +41,7 @@ exports.deleteCourse = async (req, res) => {
         return res.status(403).json({ message: 'Not authorized' });
     }
 
-    await course.remove();
+    await course.deleteOne(); 
 
     res.json({ message: 'Course removed' });
 };

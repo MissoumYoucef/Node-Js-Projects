@@ -2,9 +2,9 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Course = require('../models/Course');
 
 exports.createPaymentIntent = async (req, res) => {
-    const { courseId } = req.body;
-
-    const course = await Course.findById(courseId);
+    const { _id } = req.body;
+    console.log(_id);
+    const course = await Course.findById(_id);
 
     if (!course) {
         return res.status(404).json({ message: 'Course not found' });
