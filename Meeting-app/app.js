@@ -23,24 +23,29 @@ app.get('/meeting/:meetingId', (req, res) => {
   res.sendFile(__dirname + '/public/meeting.html');
 });
 
-app.get('/create-meeting', (req, res) => {
-    // const meetingId = uuidV4();
-    // res.redirect(`/meeting/${meetingId}`);
+app.get('/meetingpage', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
   });
-  
+
+app.get('/create-meeting', (req, res) => {
+    const meetingId = uuidV4();
+    res.redirect(`/meeting/${meetingId}`);
+  });
 
 io.on('connection', (socket) => {
   socket.on('join-meeting', (meetingId, userId) => {
     socket.join(meetingId);
     socket.to(meetingId).broadcast.emit('user-connected', userId);
+    console.log('User connected');
 
     socket.on('message', (message) => {
       io.to(meetingId).emit('message', message);
+      console.log('Message received:', message);
     });
 
     socket.on('disconnect', () => {
       socket.to(meetingId).broadcast.emit('user-disconnected', userId);
+      console.log('User disconnected');
     });
   });
 });

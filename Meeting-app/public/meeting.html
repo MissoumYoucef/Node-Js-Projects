@@ -32,20 +32,24 @@
         const video = document.createElement('video');
         call.on('stream', userVideoStream => {
           addVideoStream(video, userVideoStream);
+          console.log('video');
         });
       });
 
       socket.on('user-connected', userId => {
         connectToNewUser(userId, stream);
+        console.log('user-connected');
       });
     });
 
     socket.on('user-disconnected', userId => {
       if (peers[userId]) peers[userId].close();
+      console.log('user-disconnected'+userId);
     });
 
     myPeer.on('open', id => {
       socket.emit('join-meeting', MEETING_ID, id);
+      console.log('join-meeting' + id);
     });
 
     function connectToNewUser(userId, stream) {

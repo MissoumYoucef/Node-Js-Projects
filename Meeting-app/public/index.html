@@ -9,9 +9,20 @@
 <body>
   <h1>Welcome to the Meeting App</h1>
   <a href="/create-meeting">Create a new meeting</a>
-  <form action="/join-meeting" method="GET">
-    <input type="text" name="meetingId" placeholder="Enter meeting code">
+  <form id="join-meeting-form">
+    <input type="text" id="meetingId" name="meetingId" placeholder="Enter meeting code" required>
     <button type="submit">Join Meeting</button>
   </form>
+  <script>
+    document.getElementById('join-meeting-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const meetingId = document.getElementById('meetingId').value;
+      if (meetingId) {
+        window.location.href = `/meeting/${meetingId}`;
+      } else {
+        alert('Please enter a meeting code');
+      }
+    });
+  </script>
 </body>
 </html>

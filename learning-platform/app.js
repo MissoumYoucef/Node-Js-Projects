@@ -11,6 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static('public'));
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -28,8 +29,6 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
-
-app.use(express.static('views'));
 
 const PORT = process.env.PORT || 5000;
 
