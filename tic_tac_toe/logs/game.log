@@ -16,3 +16,9 @@
 2024-07-16T19:12:38.665Z info: Room created: e230f105-8d3f-4483-b837-ceffc5ca9c03 by RDd_YOf9JFtjYNJiAAAH
 2024-07-16T19:12:46.002Z info: Player JKClVFfC1UmvDi5QAAAF joined room e230f105-8d3f-4483-b837-ceffc5ca9c03
 2024-07-16T19:12:50.552Z info: Player RDd_YOf9JFtjYNJiAAAH made move X at 8 in room e230f105-8d3f-4483-b837-ceffc5ca9c03
+2024-07-22T20:40:40.098Z info: Server running on port 3000
+2024-07-22T20:43:52.369Z info: New connection: 9TzIvEnY3hMwFHkHAAAB
+2024-07-22T20:44:13.304Z info: Room created: 5f2fbcfe-2506-4d8d-9778-5deb08559dfb by 9TzIvEnY3hMwFHkHAAAB
+2024-07-22T20:44:31.500Z info: New connection: Qz31Y8uHSbTwFUEcAAAD
+2024-07-22T20:44:44.423Z info: Player Qz31Y8uHSbTwFUEcAAAD joined room 5f2fbcfe-2506-4d8d-9778-5deb08559dfb
+2024-07-22T20:44:56.550Z info: Player Qz31Y8uHSbTwFUEcAAAD made move X at 8 in room 5f2fbcfe-2506-4d8d-9778-5deb08559dfb
