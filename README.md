@@ -1,7 +1,7 @@
-### Backend Projects Collection
+### Backend Projects Collection ###
 Welcome to the Backend Projects Collection repository. This repository contains 11 distinct backend projects, each designed to demonstrate various skills, tools, and technologies commonly used in backend development.
 
-## Table of Contents
+## Table of Contents ##
 Project 1: REST API for E-Commerce
 Project 2: Authentication System with JWT
 Project 3: CRUD Application with Node.js and Express
